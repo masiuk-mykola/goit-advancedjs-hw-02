@@ -32,7 +32,7 @@ function onClose(selectedDates) {
   const selectedTime = new Date(selectedDates[0]).getTime();
 
   const diffTime = selectedTime - currentTime;
-  if (diffTime < 0) {
+  if (diffTime <= 0) {
     startBtn.setAttribute('disabled', true);
     iziToast.error({
       title: 'Oops',

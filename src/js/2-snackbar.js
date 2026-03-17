@@ -6,21 +6,7 @@ const form = document.querySelector('.form');
 const makePromise = ({ delay, shouldResolve }) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (shouldResolve) {
-        resolve();
-        iziToast.success({
-          title: '✅',
-          message: `Fulfilled promise in ${delay}ms`,
-          position: 'topRight',
-        });
-      } else {
-        reject();
-        iziToast.error({
-          title: '❌',
-          message: `Rejected promise in ${delay}ms`,
-          position: 'topRight',
-        });
-      }
+      shouldResolve ? resolve(delay) : reject(delay);
     }, delay);
   });
 };
@@ -41,7 +27,21 @@ function handleSubmit(event) {
   makePromise({
     delay: formData.delay,
     shouldResolve: formData.state === 'fulfilled' ? true : false,
-  });
+  })
+    .then(delay => {
+      iziToast.success({
+        title: '✅',
+        message: `Fulfilled promise in ${delay}ms`,
+        position: 'topRight',
+      });
+    })
+    .catch(delay => {
+      iziToast.error({
+        title: '❌',
+        message: `Rejected promise in ${delay}ms`,
+        position: 'topRight',
+      });
+    });
   formData.delay = null;
   formData.state = null;
 }
